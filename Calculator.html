@@ -1,0 +1,301 @@
+<html>
+<head>
+	<title>Calculator</title>
+	<link rel="stylesheet" href="Calculator_CSS.css">
+	<script src="JavaScript_Files/Calculator_JavaScript.js" defer></script>
+	<script src="JavaScript_Files/ByteConverter_JavaScript.js" defer></script>
+	<script src="JavaScript_Files/TemperatureConverter_JavaScript.js" defer></script>
+	<script src="JavaScript_Files/GradeCalculator_JavaScript.js" defer></script>
+	<!--<script src="JavaScript_Files/Draggable_Calculator.js" defer></script>-->
+	<!--<script src="JavaScript_Files/Time.js" defer></script>-->
+	<style>
+		.activeTemp {
+			font-weight: bold;
+			color: red;
+		}
+	</style>
+</head>
+<body>
+	<!--onload="startTime()"-->
+	<div id="calculator">
+		<div id="topBar">
+			<select id="layouts" onchange="changeLayout(this)">
+				<option label="calcLayout">Calculator</option>
+				<option label="byteLayout">Byte Converter</option>
+				<option label="tempLayout">Temperature Converter</option>
+				<option label="gradeLayout">Grade Calculator</option>
+			</select>
+		</div>
+		<div id="CalcLayout">
+			<div id="display">
+				<div id="smallTop"></div>
+				<div id="bigBottom">0</div>
+			</div>
+			<button id="MC" class="mem disable" disabled onclick="mem(this)">MC</button>
+			<button id="MR" class="mem disable" disabled onclick="mem(this)">MR</button>
+			<button id="M+" class="mem" onclick="mem(this)">M+</button>
+			<button id="M-" class="mem" onclick="mem(this)">M-</button>
+			<button id="MS" class="mem" onclick="mem(this)">MS</button><br>
+			
+			<div id="test" value="*"></div>
+			
+			<div id="keyEvent">
+				<button id="square" onclick="ops(this)">&#8730;</button>
+				<button id="openParen" value="(" onclick="ops(this)">(</button>
+				<button id="closeParen" value=")" onclick="ops(this)">)</button>
+				<button id="percent" value="%" onclick="percent()">%</button><br>
+				
+				<button id="CE" onclick="clearMe(this)">CE</button>
+				<button id="C" onclick="clearMe(this)">C</button>
+				<button id="Back" onclick="clearMe(this)"><<</button>
+				<button id="Divide" class="op" onclick="ops(this)" value="/">&#247;</button><br>
+				
+				<button id="Seven" class="num" onclick="numFunc(this)">7</button>
+				<button id="Eight" class="num" onclick="numFunc(this)">8</button>
+				<button id="Nine" class="num" onclick="numFunc(this)">9</button>
+				<button id="x" class="op" onclick="ops(this)" value="*">x</button><br>
+				
+				<button id="Four" class="num" onclick="numFunc(this)">4</button>
+				<button id="Five" class="num" onclick="numFunc(this)">5</button>
+				<button id="Six" class="num" onclick="numFunc(this)">6</button>
+				<button id="dash" class="op" onclick="ops(this)" value="-">&minus;</button><br>
+				
+				<button id="One" class="num" onclick="numFunc(this)">1</button>
+				<button id="Two" class="num" onclick="numFunc(this)">2</button>
+				<button id="Three" class="num" onclick="numFunc(this)">3</button>
+				<button id="plus" class="op" onclick="ops(this)" value="+">+</button><br>
+				
+				<button id="plusMinus" onclick="ops(this)">&#177;</button>
+				<button id="Zero" class="num" onclick="numFunc(this)">0</button>
+				<button id="dot" value="." onclick="ops(this)">.</button>
+				<button id="Eq" class="op" onclick="equal()">=</button>
+			</div>
+		</div>
+		
+		<div id="ByteLayout" style="display: none">
+			<span style="font-size:25px">Number to Convert:</span>
+			<input id="byte" maxlength="19" onkeypress="validateByte(event)"><br>
+			<span id="from">From</span>
+			<span id="to">To</span><br>
+			<select id="fromDrop">
+				<option selected>Byte</option>
+				<option>Kilobyte</option>
+				<option>Megabyte</option>
+				<option>Gigabyte</option>
+				<option>Terabyte</option>
+				<option>Pedabyte</option>
+			</select>
+			<select id="toDrop">
+				<option>Byte</option>
+				<option selected>Kilobyte</option>
+				<option>Megabyte</option>
+				<option>Gigabyte</option>
+				<option>Terabyte</option>
+				<option>Pedabyte</option>
+			</select><br>
+			<div style="text-align: center">
+				<button style="margin:15px; width:86px" onclick="calcByte()">Convert</button>
+			</div>
+			<span style="font-size:25px">Result:</span>
+			<div id="result"></div>
+		</div>
+		
+		<div id="TempLayout" style="display: none">
+			<div class="temperature activeTemp">0</div><br>
+			<select class="dropDown" onchange="change()">
+				<option value="C" selected>Celsius</option>
+				<option value="F">Fahrenheit</option>
+				<option value="K">Kelvin</option>
+			</select><br>
+			<div class="temperature">32</div><br>
+			<select class="dropDown" onchange="change()">
+				<option value="C">Celsius</option>
+				<option value="F" selected>Fahrenheit</option>
+				<option value="K">Kelvin</option>
+			</select><br>
+			<div id="keyPad">
+				<button onclick="clearAll()" title="Clear All (Delete key)">CE</button>
+				<button onclick="erase()" title="Backspace (Backspace key)"><<</button><br>
+				
+				<button class="num" onclick="tempNum(7)">7</button>
+				<button class="num" onclick="tempNum(8)">8</button>
+				<button class="num" onclick="tempNum(9)">9</button><br>
+				
+				<button class="num" onclick="tempNum(4)">4</button>
+				<button class="num" onclick="tempNum(5)">5</button>
+				<button class="num" onclick="tempNum(6)">6</button><br>
+				
+				<button class="num" onclick="tempNum(1)">1</button>
+				<button class="num" onclick="tempNum(2)">2</button>
+				<button class="num" onclick="tempNum(3)">3</button><br>
+				
+				<button onclick="changePos()">&#177;</button>
+				<button class="num" onclick="tempNum(0)">0</button>
+				<button onclick="tempNum('.')">.</button>
+			</div>
+			<span>Hit "Backspace" key to delete one number. Hit "Delete" key to clear all</span>
+		</div>
+		
+		<div id="GradeLayout" style="display:none">
+			<button id="percents" class="active" onclick="changeCalc(this)" style="height:40px; width:90px">Weight</button>
+			<button id="points" onclick="changeCalc(this)" style="height:40px">Points</button>
+			<button id="average" onclick="changeCalc(this)" style="height:40px; width: 90px">Average</button>
+			<div id="percentGrade">
+				<span class="titles">#</span>
+				<span class="titles position" style="left:20px">Grade (%)</span>
+				<span class="titles position" style="left:61px">Weight (%)</span><br>
+				<div id="fields">
+					<span class="titles">1</span>
+					<input class="grade" onkeydown="validate(event)">
+					<input class="weight" onkeydown="validate(event)"><br>
+					
+					<span class="titles">2</span>
+					<input class="grade" onkeydown="validate(event)">
+					<input class="weight" onkeydown="validate(event)"><br>
+					
+					<span class="titles">3</span>
+					<input class="grade" onkeydown="validate(event)">
+					<input class="weight" onkeydown="validate(event)"><br>
+					
+					<span class="titles">4</span>
+					<input class="grade" onkeydown="validate(event)">
+					<input class="weight" onkeydown="validate(event)"><br>
+					
+					<span class="titles" onkeydown="validate(event)">5</span>
+					<input class="grade" onkeydown="validate(event)">
+					<input class="weight" onkeydown="validate(event)"><br>
+					
+					<span class="titles">6</span>
+					<input class="grade" onkeydown="validate(event)">
+					<input class="weight" onkeydown="validate(event)"><br>
+					
+					<span class="titles">7</span>
+					<input class="grade" onkeydown="validate(event)">
+					<input class="weight" onkeydown="validate(event)"><br>
+					
+					<span class="titles">8</span>
+					<input class="grade" onkeydown="validate(event)">
+					<input class="weight" onkeydown="validate(event)"><br>
+				</div>
+				
+				<div style="text-align:center">
+					<button style="height:40px; width:100px" onclick="calcGrade()">Calculate</button>
+					<button style="height:40px" onclick="resetFields(this)">Reset</button>
+					<button style="height:40px; width: 98px" onclick="addRow(this)">Add Row</button>
+				</div>
+				
+				<span class="titles">Grade:</span>
+				<span class="titles" style="position:relative; left:106px">Letter Grade:</span><br>
+				<div id="averageGrade" class="finalGrade"></div>
+				<div id="averageLetter" class="finalGrade letterGrade"></div>
+			</div>
+			
+			<div id="pointGrade" style="display:none">
+				<span class="titles">#</span>
+				<span class="titles position" style="left:20px">Earned</span>
+				<span class="titles position" style="left:76px">Total</span><br>
+				
+				<div id="pointField">
+					<span class="titles">1</span>
+					<input class="points" onkeydown="validation(event)">
+					<input class="totalPoints" onkeydown="validation(event)"><br>
+					
+					<span class="titles">2</span>
+					<input class="points" onkeydown="validation(event)">
+					<input class="totalPoints" onkeydown="validation(event)"><br>
+					
+					<span class="titles">3</span>
+					<input class="points" onkeydown="validation(event)">
+					<input class="totalPoints" onkeydown="validation(event)"><br>
+					
+					<span class="titles">4</span>
+					<input class="points" onkeydown="validation(event)">
+					<input class="totalPoints" onkeydown="validation(event)"><br>
+					
+					<span class="titles">5</span>
+					<input class="points" onkeydown="validation(event)">
+					<input class="totalPoints" onkeydown="validation(event)"><br>
+					
+					<span class="titles">6</span>
+					<input class="points" onkeydown="validation(event)">
+					<input class="totalPoints" onkeydown="validation(event)"><br>
+					
+					<span class="titles">7</span>
+					<input class="points" onkeydown="validation(event)">
+					<input class="totalPoints" onkeydown="validation(event)"><br>
+					
+					<span class="titles">8</span>
+					<input class="points" onkeydown="validation(event)">
+					<input class="totalPoints" onkeydown="validation(event)"><br>
+				</div>
+				
+				<div style="text-align:center">
+					<button style="height:40px; width:100px" onclick="calcPointGrade()">Calculate</button>
+					<button style="height:40px" onclick="resetFields(this)">Reset</button>
+					<button style="height:40px; width: 98px" onclick="addRow(this)">Add Row</button>
+				</div>
+				
+				<span class="titles">Grade:</span>
+				<span class="titles" style="position:relative; left:106px">Letter Grade:</span><br>
+				<div id="totalGrade" class="finalGrade"></div>
+				<div id="pointLetter" class="finalGrade letterGrade"></div>
+			</div>
+			
+			<div id="gradeAverage" style="display: none">
+				<span class="titles">#</span>
+				<span class="titles position" style="left:20px">Enter Grade Percentages</span><br>
+				
+				<div id="averageField">
+					<span class="titles">1</span>
+					<input class="average" style="width: 272px" onkeydown="validate(event)" placeholder="Example: 100"><br>
+					
+					<span class="titles">2</span>
+					<input class="average" style="width: 272px" onkeydown="validate(event)"><br>
+					
+					<span class="titles">3</span>
+					<input class="average" style="width: 272px" onkeydown="validate(event)"><br>
+					
+					<span class="titles">4</span>
+					<input class="average" style="width: 272px" onkeydown="validate(event)"><br>
+					
+					<span class="titles">4</span>
+					<input class="average" style="width: 272px" onkeydown="validate(event)"><br>
+					
+					<span class="titles">6</span>
+					<input class="average" style="width: 272px" onkeydown="validate(event)"><br>
+					
+					<span class="titles">7</span>
+					<input class="average" style="width: 272px" onkeydown="validate(event)"><br>
+					
+					<span class="titles">8</span>
+					<input class="average" style="width: 272px" onkeydown="validate(event)"><br>
+				</div>
+				
+				<div style="text-align:center">
+					<button style="height:40px; width:100px" onclick="calcAverage()">Calculate</button>
+					<button style="height:40px" onclick="resetFields(this)">Reset</button>
+					<button style="height:40px; width: 98px" onclick="addRow(this)">Add Row</button>
+				</div>
+				
+				<span class="titles">Average Grade:</span>
+				<span class="titles" style="position:relative; left:24px">Letter Grade:</span><br>
+				<div id="avgGrade" class="finalGrade"></div>
+				<div id="avgLetter" class="finalGrade letterGrade"></div>
+			</div>
+		</div>
+	</div>
+	
+	
+	<div id="disclaimer">Note: The search bar and windows icon are just for display purposes only. They have no functionality added to them. Also, this calculator calculates using the PEMDAS rule.</div>
+	
+	<div id="taskBar">
+		<img class="img" src="WinIcon.png">
+		<p id="searchBar">Type here to search</p>
+		<img class="img" src="Calculator_Icon.png">
+		<div id="timeDay">
+			<div id="time"></div><br>
+			<div id="date"></div>
+		</div>
+	</div>
+</body>
+</html>
